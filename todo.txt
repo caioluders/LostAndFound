@@ -1,0 +1,23 @@
+# checkers
+[ ] npm
+[ ] twitter
+[ ] github
+[ ] instagram
+[ ] domain
+[ ] bitbucket
+[ ] gitlab
+[ ] rubygems
+[ ] pypi
+[ ] packagist/composer
+[ ] buckets
+
+# extractors
+[ ] apk
+[ ] ipa
+[ ] website
+[ ] binary
+[ ] firefox extension
+[ ] chrome extension
+[ ] source code
+[ ] 
+

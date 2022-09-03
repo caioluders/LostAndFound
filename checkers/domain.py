@@ -1,4 +1,4 @@
-import aiodns, asyncio, sys
+import aiodns, asyncio, sys, tqdm
 
 class AsyncResolver(object):
 	def __init__(self):
@@ -20,18 +20,24 @@ class AsyncResolver(object):
 		item = {"domain": domain, "type": "A", "data": data}
 		return item
 
-
-def main(domains):
+def check(domains):
+	domains = filter(None, domains)
+	domains = set(domains)
 	dns_resolver = AsyncResolver()
 
-	for d in domains :
+	for d in tqdm.tqdm(domains) :
 		try :
 			dns_resolver.query_A(d)
 		except aiodns.error.DNSError as error :
-			print("[!] % NOT REGISTRED", d)
+			if error.args[0] == 4 :
+				print("[!] % NOT REGISTRED", d)
 
-if __name__ == "__main__" :
+
+def main():
 	if len(sys.argv) < 2 :
 		sys.exit("[!] domain list file missing; python domain.py domains.txt")
 	domain_list = open(sys.argv[1],"r").read().split("\n")
-	main(domain_list)
+	check(domain_list)
+
+if __name__ == "__main__" :
+	main()

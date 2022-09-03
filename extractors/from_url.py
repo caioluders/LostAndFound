@@ -1,12 +1,17 @@
 import requests, sys, re
-import from_string
 
-def main(domain) :
+def extract(domain):
 	r = requests.get(domain)
-	result = from_string.main(r.text)
+	result = from_string.extract(r.text)
 	return result
 
-if __name__ == "__main__" :
+def main() :
 	if len(sys.argv) < 2 :
-		sys.exit("[!] Url required; python3 from_url.py http://google.com")	
-	print(main(sys.argv[1]))
+		sys.exit("[!] Url required; python3 from_url.py http://google.com") 
+	print(extract(sys.argv[1]))
+
+if __name__ == "__main__" :
+	import from_string
+	main()
+else :
+	from . import from_string
