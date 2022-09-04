@@ -26,10 +26,10 @@ def check_all(urls, checkers):
 	print(urls)
 	for u in urls :
 		if not (u.startswith('http') or u.startswith('//')): # vai quebrar com ctz
-			u = u[1:]
-		u = u.replace("www.","") # fodase os edgecase
+			parsed_url = u[1:]
+		parsed_url = parsed_url.replace("www.","") # fodase os edgecase
 
-		parsed_url = urllib.parse.urlparse(u)
+		parsed_url = urllib.parse.urlparse(parsed_url)
 
 		if parsed_url.netloc in checkers.keys() :
 			checkers[parsed_url.netloc].check(u)
