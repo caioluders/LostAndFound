@@ -1,16 +1,22 @@
 import requests, urllib
 
-base_domain = "github.com"
+base_domains = ["github.com"]
+cache_domains = set()
+
 
 def check(url):
-	if url.startswith("//") :
-		url = "https:"+url
-
+	
 	parsed_url = urllib.parse.urlparse(url)
 	
+	# get only user
 	if parsed_url.path.count('/') >= 2 :
 		url = '/'.join(url.split('/')[:4])
-	r = requests.get(url)
+	
+	if url not in cache_domains :
+		cache_domains.add(url) 
 
-	if r.status_code == 404 :
-		print("[!] Github unregistred username:", url)
+
+		r = requests.get(url)
+
+		if r.status_code == 404 :
+			print("[!] Github unregistred username:", url)

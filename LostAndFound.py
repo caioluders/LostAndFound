@@ -1,5 +1,6 @@
-import os, sys, argparse, importlib.util, urllib
-from extractors import from_url 
+import os, sys, argparse, importlib.util, urllib, fnmatch
+from extractors import from_url, from_string
+from utils import *
 
 def load_checkers():
 	checkers_folder = "./checkers"
@@ -14,10 +15,7 @@ def load_checkers():
 
 		info = importlib.machinery.PathFinder().find_spec(c[:-3],[checkers_folder])
 		p = info.loader.load_module()
-		if hasattr(p,'base_domain'):
-			checkers[p.base_domain] = p
-		else :
-			checkers[c[:-3]] = p
+		checkers[c[:-3]] = p
 	return checkers
 
 def check_all(urls, checkers):
@@ -25,17 +23,21 @@ def check_all(urls, checkers):
 	domains = []
 	print(urls)
 	for u in urls :
-		if not (u.startswith('http') or u.startswith('//')): # vai quebrar com ctz
-			parsed_url = u[1:]
-		parsed_url = parsed_url.replace("www.","") # fodase os edgecase
+
+		u = clean_url(u)	
+		parsed_url = u.replace("www.","") # fodase os edgecase
 
 		parsed_url = urllib.parse.urlparse(parsed_url)
 
-		if parsed_url.netloc in checkers.keys() :
-			checkers[parsed_url.netloc].check(u)
-			urls.remove(u)
-		else :
-			domains.append(parsed_url.netloc)
+		#print(parsed_url)
+
+		domains.append(parsed_url.netloc)
+
+		for c in checkers.keys() :
+			if hasattr(checkers[c], "base_domains") :
+				if fnmatch_all(parsed_url.netloc, checkers[c].base_domains) :
+					checkers[c].check(u)
+					domains.remove(parsed_url.netloc)
 
 	checkers["domain"].check(domains)
 
@@ -55,6 +57,11 @@ def main(args):
 		print("BIN: ", args.bin)
 	elif args.proxy:
 		print("PROXY: ", args.proxy)
+	elif args.txt:
+		print("TXT: ", args.txt)
+		f = open(args.txt,"r").read()
+		urls = from_string.extract(f)
+		check_all(urls, checkers)
 
 if __name__ == "__main__" :
 	parser = argparse.ArgumentParser(description="")
@@ -64,7 +71,13 @@ if __name__ == "__main__" :
 	group.add_argument("-d", "--dir", help="Directory of Source Code to check")
 	group.add_argument("-i", "--ipa", help="IPA to check")
 	group.add_argument("-b", "--bin", help="Binary to check")
+	group.add_argument("-t", "--txt", help="Text file to check")
 	group.add_argument("-p", "--proxy", help="Proxy to check")
 
 	args = parser.parse_args()
+
+	if len(sys.argv) == 1 :
+		parser.print_help(sys.stderr)
+		sys.exit()
+
 	main(args)
