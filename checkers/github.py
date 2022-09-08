@@ -20,3 +20,4 @@ def check(url):
 
 		if r.status_code == 404 :
 			print("[!] Github unregistred username:", url)
+

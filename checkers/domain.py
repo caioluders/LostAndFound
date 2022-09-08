@@ -32,6 +32,17 @@ def check(domains):
 			if error.args[0] == 4 :
 				print("[!] % NOT REGISTRED", d)
 
+def check_passive(domain):
+
+	dns_resolver = AsyncResolver()
+
+	try :
+		dns_resolver.query_A(domain)
+	except aiodns.error.DNSError as error :
+		if error.args[0] == 4 :
+			return False
+
+	return True
 
 def main():
 	if len(sys.argv) < 2 :
