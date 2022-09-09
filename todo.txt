@@ -1,7 +1,7 @@
 # checkers
 [ ] npm
 [ ] twitter
-[ ] github
+[X] github
 [ ] instagram
 [ ] domain
 [ ] bitbucket
@@ -9,15 +9,14 @@
 [ ] rubygems
 [ ] pypi
 [ ] packagist/composer
+[X] S3
 [ ] buckets
 
 # extractors
-[ ] apk
+[X] apk
 [ ] ipa
-[ ] website
-[ ] binary
+[X] website
+[X] binary
 [ ] firefox extension
 [ ] chrome extension
 [ ] source code
-[ ] 
-
