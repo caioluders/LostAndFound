@@ -1,5 +1,5 @@
 import os, sys, argparse, importlib.util, urllib, fnmatch
-from extractors import from_url, from_string
+from extractors import from_url, from_string, from_apk, from_binary
 from utils import *
 
 def load_checkers():
@@ -49,12 +49,16 @@ def main(args):
 		check_all(urls, checkers)
 	elif args.apk:  
 		print("APK: ", args.apk)
+		urls = from_apk.extract(args.apk)
+		check_all(urls, checkers)
 	elif args.dir:
 		print("DIR: ", args.dir)
 	elif args.ipa:
 		print("IPA: ", args.ipa)
 	elif args.bin:
 		print("BIN: ", args.bin)
+		urls = from_binary.extract(args.bin)
+		check_all(urls, checkers)
 	elif args.proxy:
 		print("PROXY: ", args.proxy)
 	elif args.txt:
