@@ -92,15 +92,18 @@ class BurpExtender(IBurpExtender, IScannerCheck, IProxyListener):
 		# look for matches of our passive check grep string
 
 		request_info = baseRequestResponse.getHttpService()
-		request_response = baseRequestResponse.getResponse()
+		request_response = self._helpers.bytesToString(baseRequestResponse.getResponse())
 		request_url =  self._helpers.analyzeRequest(baseRequestResponse).getUrl().toString()
 		request_code = self._helpers.analyzeResponse(request_response).getStatusCode()
 
 		matches = []
+		self._stdout.println("nem tchum "+str(request_response))
 
 		for c in self.checkers :
 			if hasattr(self.checkers[c], "base_domains") :
+
 				if self.fnmatch_all(request_info.getHost(), self.checkers[c].base_domains) :
+					self._stdout.println("wtf "+request_url)
 					if self.checkers[c].check( request_url, request_response, request_code ) :
 						self._stdout.println("vulnerable "+request_url)
 						matches.append(CustomScanIssue(
