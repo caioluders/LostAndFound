@@ -1,6 +1,16 @@
-import os, sys, argparse, importlib.util, urllib, fnmatch
+import os, sys, argparse, importlib.util, urllib, fnmatch, tqdm
 from extractors import from_url, from_string, from_apk, from_binary
 from utils import *
+
+
+def banner() :
+	b = '''
+    :･ﾟ✧:･ﾟ✧:☆*:✧:･ﾟ✧::☆*:･ﾟ✧::☆*::･ﾟ:☆*:ﾟ✧:･ﾟ:☆*::･ﾟ:☆*::･ﾟ✧
+    (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧     𝓛𝓸𝓼𝓽 & 𝓕𝓸𝓾𝓷𝓭         。.:☆*:･'(*⌒―⌒*)))
+    :･ﾟ✧:･ﾟ✧:☆*:✧:･ﾟ✧::☆*:･ﾟ✧::☆*::･ﾟ:☆*:ﾟ✧:･ﾟ:☆*::･ﾟ:☆*::･ﾟ✧
+	'''
+
+	print(b)
 
 def load_checkers():
 	checkers_folder = "./checkers"
@@ -43,13 +53,14 @@ def check_all(urls, checkers):
 
 def main(args):
 	checkers = load_checkers()
+	banner()
 	if args.url:
 		print("URL: ", args.url)
 		urls = set()
 		if os.path.isfile(args.url) :
 			with open(args.url) as f :
-				for l in f :
-					[ urls.add(u) for u in from_url.extract(l) ]
+				for l in tqdm.tqdm(f) :
+					[ urls.add(u) for u in from_url.extract(clean_url(l.strip())) ]
 		else :
 			urls = from_url.extract(args.url)
 		

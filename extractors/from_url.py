@@ -1,9 +1,13 @@
 import requests, sys, re
 
 def extract(domain):
-	r = requests.get(domain)
-	result = from_string.extract(r.text)
-	return result
+	try :
+		r = requests.get(domain, timeout=4)
+		result = from_string.extract(r.text)
+		return result
+	except Exception as e :
+		print("[!] Error %s " % e )
+		return []
 
 def main() :
 	if len(sys.argv) < 2 :

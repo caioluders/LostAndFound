@@ -1,4 +1,4 @@
-import aiodns, asyncio, sys, tqdm
+import aiodns, asyncio, sys, tqdm, string
 
 class AsyncResolver(object):
 	def __init__(self):
@@ -20,12 +20,23 @@ class AsyncResolver(object):
 		item = {"domain": domain, "type": "A", "data": data}
 		return item
 
+def clean_domain(dirty_domain):
+	allowed_chars = string.ascii_letters + string.digits + "-."
+
+	for i in range(len(dirty_domain)) :
+		if dirty_domain[i] not in allowed_chars:
+			i -= 1
+			break
+
+	return dirty_domain[:i+1]
+
 def check(domains):
 	domains = filter(None, domains)
 	domains = set(domains)
 	dns_resolver = AsyncResolver()
 
 	for d in tqdm.tqdm(domains) :
+		d = clean_domain(d)
 		try :
 			dns_resolver.query_A(d)
 		except aiodns.error.DNSError as error :
