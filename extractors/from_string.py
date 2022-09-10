@@ -1,7 +1,12 @@
 import re, sys
 
 def extract(txt) :
-	grab_links = r"""://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+""" # needs improvement
+	grab_links = re.compile( # yonked from mobsf
+        (
+            r'((?:https?://|s?ftps?://|'
+            r'file://|javascript:|www\d{0,3}[.])'
+            r'[\w().=/;,#:@?&~*+!$%\'{}-]+)'
+        )) # needs improvement
 	result = re.findall(grab_links,txt)
 	return result
 

@@ -45,7 +45,14 @@ def main(args):
 	checkers = load_checkers()
 	if args.url:
 		print("URL: ", args.url)
-		urls = from_url.extract(args.url)
+		urls = set()
+		if os.path.isfile(args.url) :
+			with open(args.url) as f :
+				for l in f :
+					[ urls.add(u) for u in from_url.extract(l) ]
+		else :
+			urls = from_url.extract(args.url)
+		
 		check_all(urls, checkers)
 	elif args.apk:  
 		print("APK: ", args.apk)

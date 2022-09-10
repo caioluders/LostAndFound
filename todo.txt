@@ -3,9 +3,9 @@
 [ ] twitter
 [X] github
 [ ] instagram
-[ ] domain
-[ ] bitbucket
-[ ] gitlab
+[X] domain
+[X] bitbucket
+[X] gitlab
 [ ] rubygems
 [ ] pypi
 [ ] packagist/composer

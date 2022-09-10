@@ -2,7 +2,7 @@ import fnmatch
 
 def clean_url(url):
 	url = url.split("//")
-	url = "https://"+url[1] if len(url)>=1 else "https://"+rl[0]
+	url = "https://"+url[1] if len(url)>1 else "https://"+url[0]
 
 	return url
 
