@@ -59,8 +59,11 @@ def main(args):
 		urls = set()
 		if os.path.isfile(args.url) :
 			with open(args.url) as f :
-				for l in tqdm.tqdm(f) :
-					[ urls.add(u) for u in from_url.extract(clean_url(l.strip())) ]
+				clean_urls = []
+				for l in f :
+					clean_urls.append(clean_url(l.strip()))
+
+				urls = from_url.extract(clean_urls)
 		else :
 			urls = from_url.extract(args.url)
 		

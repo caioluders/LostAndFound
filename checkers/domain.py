@@ -3,7 +3,8 @@ import aiodns, asyncio, sys, tqdm, string
 class AsyncResolver(object):
 	def __init__(self):
 		self.timeout = 0.1
-		self.loop = asyncio.get_event_loop()
+		self.loop = asyncio.new_event_loop()
+		asyncio.set_event_loop(self.loop)
 		self.resolver = aiodns.DNSResolver(timeout=self.timeout, loop=self.loop)
 		self.resolver.nameservers = ['8.8.8.8']
 
