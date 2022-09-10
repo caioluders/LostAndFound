@@ -10,7 +10,7 @@ The tool helps you find broken, wrong and expired assets on any application.
 ## Usage
 
 ```
-usage: LostAndFound.py [-h] [-u URL | -a APK | -d DIR | -i IPA | -b BIN | -t TXT | -p PROXY]
+usage: LostAndFound.py - [-h] - [-u URL | -a APK | -d DIR | -i IPA | -b BIN | -t TXT | -p PROXY]
 
 options:
   -h, --help            show this help message and exit
@@ -34,38 +34,38 @@ $ python3 LostAndFound.py -u http://aratu.boitatech.com.br/
     :･ﾟ✧:･ﾟ✧:☆*:✧:･ﾟ✧::☆*:･ﾟ✧::☆*::･ﾟ:☆*:ﾟ✧:･ﾟ:☆*::･ﾟ:☆*::･ﾟ✧
 	
 URL:  http://aratu.boitatech.com.br/
-['https://aratu.boitatech.com.br', 'https://aratu.boitatech.com.br/images-event/meta-image.png', 'https://aratu.boitatech.com.br', 'https://aratu.boitatech.com.br/images-event/meta-image.png', 'https://platform-api.sharethis.com/js/sharethis.js#property=6254e99180366d0019fc1adf&product=sticky-share-buttons', 'https://forms.gle/oLHmm4V6HzZxr2Pr6', 'https://discord.gg/7xrXqR8x5T', 'https://ctf-api.boitatech.com.br/login', 'https://www.hakaioffensivesecurity.com/', 'https://crowsec.com.br/', 'https://hackingclub.com/', 'https://www.bughunt.com.br/', 'https://www.convisoappsec.com/', 'https://idwall.co/', 'https://www.faculdadevincit.edu.br/cursos', 'https://discord.gg/7xrXqR8x5T', 'https://twitter.com/boitatech', 'https://instagram.com/boitatech', 'https://github.com/boitatech', 'https://www.googletagmanager.com/gtag/js?id=G-SJF22ZP7FR']
-100%|█████████████████████████████████████████████████████████████████████████████████| 14/14 [00:01<00:00, 13.61it/s]
+- ['https://aratu.boitatech.com.br', 'https://aratu.boitatech.com.br/images-event/meta-image.png', 'https://aratu.boitatech.com.br', 'https://aratu.boitatech.com.br/images-event/meta-image.png', 'https://platform-api.sharethis.com/js/sharethis.js#property=6254e99180366d0019fc1adf&product=sticky-share-buttons', 'https://forms.gle/oLHmm4V6HzZxr2Pr6', 'https://discord.gg/7xrXqR8x5T', 'https://ctf-api.boitatech.com.br/login', 'https://www.hakaioffensivesecurity.com/', 'https://crowsec.com.br/', 'https://hackingclub.com/', 'https://www.bughunt.com.br/', 'https://www.convisoappsec.com/', 'https://idwall.co/', 'https://www.faculdadevincit.edu.br/cursos', 'https://discord.gg/7xrXqR8x5T', 'https://twitter.com/boitatech', 'https://instagram.com/boitatech', 'https://github.com/boitatech', 'https://www.googletagmanager.com/gtag/js?id=G-SJF22ZP7FR']
+100%|█████████████████████████████████████████████████████████████████████████████████| 14/14 - [00:01<00:00, 13.61it/s]
 ```
 
 ## Checkers
 
 They check (duh) if this asset is broken.
 
-[ ] npm
-[X] twitter
-[X] github
-[ ] instagram
-[ ] Youtube
-[X] domain
-[X] bitbucket
-[X] gitlab
-[ ] rubygems
-[ ] pypi
-[ ] packagist/composer
-[X] S3
-[ ] buckets
+- [ ] npm
+- [X] twitter
+- [X] github
+- [ ] instagram
+- [ ] Youtube
+- [X] domain
+- [X] bitbucket
+- [X] gitlab
+- [ ] rubygems
+- [ ] pypi
+- [ ] packagist/composer
+- [X] S3
+- [ ] buckets
 
 ## Extractors
 
 Given an input, they extract (duh again) all the URLS they find and pass them to the respective checkers.
 
-[X] apk
-[ ] ipa
-[X] website
-[X] binary
-[X] Burp Plugin
-[ ] source code
+- [X] apk
+- [ ] ipa
+- [X] website
+- [X] binary
+- [X] Burp Plugin
+- [ ] source code
 
 
 ## Burp Plugin
