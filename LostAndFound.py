@@ -1,4 +1,5 @@
 import os, sys, argparse, importlib.util, urllib, fnmatch, tqdm
+from time import process_time_ns
 from extractors import from_url, from_string, from_apk, from_binary
 from utils import *
 
@@ -31,10 +32,8 @@ def load_checkers():
 def check_all(urls, checkers):
 
 	domains = []
-	print(urls)
 	for u in urls :
-
-		u = clean_url(u).decode("utf8")	
+		u = clean_url(u)
 		parsed_url = u.replace("www.","") # fodase os edgecase
 
 		parsed_url = urllib.parse.urlparse(parsed_url)
