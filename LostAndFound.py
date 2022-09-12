@@ -34,7 +34,7 @@ def check_all(urls, checkers):
 	print(urls)
 	for u in urls :
 
-		u = clean_url(u)	
+		u = clean_url(u).decode("utf8")	
 		parsed_url = u.replace("www.","") # fodase os edgecase
 
 		parsed_url = urllib.parse.urlparse(parsed_url)

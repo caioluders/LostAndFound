@@ -1,8 +1,8 @@
 import fnmatch
 
 def clean_url(url):
-	url = url.split("//")
-	url = "https://"+url[1] if len(url)>1 else "https://"+url[0]
+	url = url.split(b"//")
+	url = b"https://"+url[1] if len(url)>1 else b"https://"+url[0]
 
 	return url
 

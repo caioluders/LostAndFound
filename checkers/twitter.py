@@ -6,6 +6,9 @@ cache_domains = set()
 
 def check(url):
 	
+	if len(url.split("twitter.com/")) == 1 :
+		return
+
 	# third-party check , maybe implement a headless browser
 	url = "https://tweettunnel.com/"+url.split("twitter.com/")[1].split("/")[0]
 
