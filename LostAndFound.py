@@ -31,10 +31,8 @@ def load_checkers():
 def check_all(urls, checkers):
 
 	domains = []
-	print(urls)
 	for u in urls :
-
-		u = clean_url(u).decode("utf8")	
+		u = clean_url(u)
 		parsed_url = u.replace("www.","") # fodase os edgecase
 
 		parsed_url = urllib.parse.urlparse(parsed_url)

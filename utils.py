@@ -1,9 +1,10 @@
 import fnmatch
 
 def clean_url(url):
-	url = url.split(b"//")
-	url = b"https://"+url[1] if len(url)>1 else b"https://"+url[0]
-
+	if type(url) == bytes:
+		url = url.split(b"//")
+		url = b"https://"+url[1] if len(url)>1 else b"https://"+url[0]
+		url.decode("utf8")
 	return url
 
 
