@@ -1,5 +1,4 @@
 import fnmatch
-from xml.dom.minidom import TypeInfo
 
 def clean_url(url):
 	if type(url) == bytes:

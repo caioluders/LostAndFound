@@ -1,5 +1,4 @@
 import os, sys, argparse, importlib.util, urllib, fnmatch, tqdm
-from time import process_time_ns
 from extractors import from_url, from_string, from_apk, from_binary
 from utils import *
 
