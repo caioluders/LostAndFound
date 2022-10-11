@@ -4,7 +4,7 @@ def extract(txt) :
 	grab_links = re.compile( # yonked from mobsf
         (
             r'((?:https?://|s?ftps?://|'
-            r'file://|javascript:|www\d{0,3}[.])'
+            r'file://|www\d{0,3}[.])'
             r'[\w().=/;,#:@?&~*+!$%\'{}-]+)'
         )) # needs improvement
 	result = re.findall(grab_links,txt)

@@ -8,7 +8,7 @@ def extract(bin_file) :
 	grab_links = re.compile( # yonked from mobsf
         (
             b'((?:https?://|s?ftps?://|'
-            b'file://|javascript:|www\d{0,3}[.])'
+            b'file://|www\d{0,3}[.])'
             b'[\w().=/;,#:@?&~*+!$%\'{}-]+)'
         ))
 
