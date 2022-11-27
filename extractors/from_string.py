@@ -8,6 +8,7 @@ def extract(txt) :
             r'[\w().=/;,#:@?&~*+!$%\'{}-]+)'
         )) # needs improvement
 	result = re.findall(grab_links,txt)
+	
 	return result
 
 def main() :

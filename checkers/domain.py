@@ -1,4 +1,4 @@
-import aiodns, asyncio, sys, tqdm, string
+import aiodns, asyncio, sys, tqdm, string, tldextract
 
 class AsyncResolver(object):
 	def __init__(self):
@@ -29,7 +29,14 @@ def clean_domain(dirty_domain):
 			i -= 1
 			break
 
-	return dirty_domain[:i+1]
+
+
+	domain_ext = tldextract.extract(dirty_domain[:i+1])
+
+	if domain_ext.suffix not in tldextract.TLDExtract().tlds :
+		return False
+
+	return ".".join(domain_ext[1:])
 
 def check(domains):
 	domains = filter(None, domains)
@@ -38,6 +45,7 @@ def check(domains):
 
 	for d in tqdm.tqdm(domains) :
 		d = clean_domain(d)
+		if d == False : continue
 		try :
 			dns_resolver.query_A(d)
 		except aiodns.error.DNSError as error :
