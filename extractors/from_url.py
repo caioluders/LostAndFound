@@ -25,7 +25,7 @@ def extract(domain):
 		
 	else :
 		try :
-			r = requests.get(domain, timeout=4)
+			r = requests.get(domain, timeout=4, headers={"User-Agent":"Mozilla/5.0 (Linux; Android 10; SM-A205U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.5304.141 Mobile Safari/537.36"})
 			result = from_string.extract(r.text)
 			return result
 		except Exception as e :
