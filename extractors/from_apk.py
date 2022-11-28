@@ -10,6 +10,8 @@ def extract(apk):
 
 	temp_dir = tempfile.TemporaryDirectory().name
 
+	print("[?] Running apktool...")
+
 	apktool_cmd = subprocess.Popen(["apktool","d",apk,"-o",temp_dir], 
 									stdout = subprocess.PIPE, 
 									stderr=subprocess.PIPE)

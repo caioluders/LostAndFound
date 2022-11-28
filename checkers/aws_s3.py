@@ -6,7 +6,7 @@ cache_domains = set()
 
 def check(url):
 
-	r = requests.get(url)
+	r = requests.get(url, verify=False)
 
 	if r.status_code == 404 and "NoSuchBucket" in r.text :
 		print("[!] S3 Bucket not found:",url)

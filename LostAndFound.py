@@ -1,5 +1,5 @@
-import os, sys, argparse, importlib.util, urllib, fnmatch, tqdm
-from extractors import from_url, from_string, from_apk, from_binary
+import os, sys, argparse, importlib.util, urllib, fnmatch, tqdm, requests
+from extractors import from_url, from_string, from_apk, from_binary, from_dir
 from utils import *
 
 
@@ -32,11 +32,11 @@ def check_all(urls, checkers):
 
     domains = []
     print(urls)
-    for u in urls :
+    print("[?] Checking URLS ...")
+    for u in tqdm.tqdm(urls) :
         u = clean_url(u)
-        parsed_url = u.replace("www.","") # fodase os edgecase
 
-        parsed_url = urllib.parse.urlparse(parsed_url)
+        parsed_url = urllib.parse.urlparse(u)
 
         #print(parsed_url)
 
@@ -48,11 +48,16 @@ def check_all(urls, checkers):
                     checkers[c].check(u)
                     domains.remove(parsed_url.netloc)
 
+    print("[?] Checking Domains ...")
+
     checkers["domain"].check(domains)
 
 def main(args):
     checkers = load_checkers()
     banner()
+
+    requests.packages.urllib3.disable_warnings() # ignore SSL warnings
+
     if args.url:
         print("URL: ", args.url)
         urls = set()
@@ -73,6 +78,8 @@ def main(args):
         check_all(urls, checkers)
     elif args.dir:
         print("DIR: ", args.dir)
+        urls = from_dir.extract(args.dir)
+        check_all(urls, checkers)
     elif args.ipa:
         print("IPA: ", args.ipa)
     elif args.bin:

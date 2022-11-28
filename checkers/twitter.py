@@ -2,7 +2,7 @@ import requests, urllib
 
 base_domains = ["twitter.com"]
 cache_domains = set()
-deny_list_usernames = ["share"]
+deny_list_usernames = ["share","intent"]
 
 def check(url):
 	
@@ -10,7 +10,7 @@ def check(url):
 		return
 
 	username = url.split("twitter.com/")[1].split("/")[0].split("?")[0]
-	
+
 	if username in deny_list_usernames :
 		return
 

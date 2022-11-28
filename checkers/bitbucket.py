@@ -16,7 +16,7 @@ def check(url):
 		cache_domains.add(url) 
 
 
-		r = requests.get(url)
+		r = requests.get(url, verify=False)
 
 		if r.status_code == 404 and "Resource not found" in r.text :
 			print("[!] Bitbucket unregistred username:", url)
