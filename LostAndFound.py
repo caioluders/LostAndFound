@@ -2,6 +2,7 @@ import os, sys, argparse, importlib.util, urllib, fnmatch, tqdm, requests
 from extractors import from_url, from_string, from_apk, from_binary, from_dir
 from utils import *
 
+args = []
 
 def banner() :
     b = '''
@@ -30,8 +31,9 @@ def load_checkers():
 
 def check_all(urls, checkers):
 
-    domains = []
-    print(urls)
+    domains = [] 
+    if args.verbose :
+        print(urls)
     print("[?] Checking URLS ...")
     for u in tqdm.tqdm(urls) :
         u = clean_url(u)
@@ -104,6 +106,7 @@ if __name__ == "__main__" :
     group.add_argument("-b", "--bin", help="Binary to check")
     group.add_argument("-t", "--txt", help="Text file to check")
     group.add_argument("-p", "--proxy", help="Proxy to check")
+    parser.add_argument("-v", "--verbose", help="Verbose output", action="store_true")
 
     args = parser.parse_args()
 
