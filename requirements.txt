@@ -1,5 +1,5 @@
-aiohttp==3.8.1
-aiodns==3.0.0
-requests==2.22.0
-tqdm==4.62.3
+aiohttp
+aiodns
+requests
+tqdm
 tldextract
