@@ -30,8 +30,9 @@ def clean_domain(dirty_domain):
 			break
 
 	domain_ext = tldextract.extract(dirty_domain[:i+1])
+	domain_ext = (domain_ext.domain, domain_ext.suffix) 
 
-	if domain_ext.suffix not in tldextract.TLDExtract().tlds :
+	if domain_ext[1] not in tldextract.TLDExtract().tlds :
 		return False
 
 	return ".".join(domain_ext[1:])
