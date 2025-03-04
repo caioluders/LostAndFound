@@ -5,6 +5,7 @@ cache_domains = set()
 
 
 def check(url):
+
 	
 	parsed_url = urllib.parse.urlparse(url)
 	
@@ -21,8 +22,11 @@ def check(url):
 		cache_domains.add(url) 
 
 
-		r = requests.get(url, verify=False)
-
+		try:
+			r = requests.get(url, verify=False)
+		except:
+			return
+		
 		if r.status_code == 404 :
 			print("[!] Github unregistred username:", url)
 

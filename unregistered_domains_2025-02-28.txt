@@ -1,0 +1,16 @@
+uploads.intercomusercontent.com
+*.googletagmanager.com;
+js.intercomcdn.com;
+static.intercomassets.com
+uploads.intercomusercontent.com
+static.intercomassets.eu
+static.au.intercomassets.com;
+fonts.intercomcdn.com;
+js.intercomcdn.com;
+*.hubspotusercontent-na1.net
+intercom-sheets.com;
+www.intercom-reporting.com
+fast.wistia.net
+*.sablono.link;
+*.sablono.link;
+api-iam.au.intercom.io;

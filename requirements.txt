@@ -3,3 +3,4 @@ aiodns
 requests
 tqdm
 tldextract
+dnslib
