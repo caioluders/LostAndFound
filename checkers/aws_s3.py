@@ -1,6 +1,6 @@
 import requests, urllib
 
-base_domains = ["*.s3.amazonaws.com","s3*.amazonaws.com"]
+base_domains = ["*.s3.amazonaws.com","*.s3.*.amazonaws.com","s3*.amazonaws.com"]
 cache_domains = set()
 
 
