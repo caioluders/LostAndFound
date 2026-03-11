@@ -51,7 +51,6 @@ def check_all(urls, checkers):
             if hasattr(checkers[c], "base_domains") :
                 if fnmatch_all(parsed_url.netloc, checkers[c].base_domains) :
                     checkers[c].check(u)
-                    domains.remove(parsed_url.netloc)
 
     print("[?] Checking Domains ...")
 
