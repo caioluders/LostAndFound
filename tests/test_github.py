@@ -6,7 +6,7 @@ def test_unregistered_username(load_checker, capsys):
     mock_resp = MagicMock(status_code=404)
     with patch("requests.get", return_value=mock_resp):
         checker.check("https://github.com/nonexistentuser123")
-    assert "Github unregistred username" in capsys.readouterr().out
+    assert "unregistered username" in capsys.readouterr().out
 
 
 def test_registered_username(load_checker, capsys):
@@ -33,9 +33,22 @@ def test_cache(load_checker):
     assert mock_get.call_count == 1
 
 
-def test_deep_path(load_checker, capsys):
+def test_deep_path_with_redirect_is_renamed(load_checker, capsys):
+    """If user/repo returns 301, the user was renamed — not a takeover."""
     checker = load_checker("github")
-    mock_resp = MagicMock(status_code=404)
-    with patch("requests.get", return_value=mock_resp):
+    mock_404 = MagicMock(status_code=404)
+    mock_301 = MagicMock(status_code=301)
+    with patch("requests.get", return_value=mock_404), \
+         patch("requests.head", return_value=mock_301):
+        checker.check("https://github.com/olduser/somerepo/blob/main/file.py")
+    assert capsys.readouterr().out == ""
+
+
+def test_deep_path_no_redirect_is_takeover(load_checker, capsys):
+    """If user/repo returns 404 (no redirect), it's a real takeover."""
+    checker = load_checker("github")
+    mock_404 = MagicMock(status_code=404)
+    with patch("requests.get", return_value=mock_404), \
+         patch("requests.head", return_value=mock_404):
         checker.check("https://github.com/someuser/somerepo/blob/main/file.py")
     assert "someuser" in capsys.readouterr().out

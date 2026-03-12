@@ -14,6 +14,12 @@ def check(request_url, response_body, response_status_code):
 
     username = path_parts[0]
 
+    # If URL has a repo path and returns 301, it's a renamed user with
+    # retired repos — not a real takeover.
+    if len(path_parts) >= 2 and path_parts[1]:
+        if response_status_code == 301:
+            return None
+
     if response_status_code == 404 and "Resource not found" in response_body:
         return {"detail": "Unregistered Bitbucket username: %s" % username}
 

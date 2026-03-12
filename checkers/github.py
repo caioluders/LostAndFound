@@ -7,30 +7,46 @@ deny_list_usernames = ["orgs", "features", "marketplace", "explore", "topics", "
 
 def check(url):
 
-
 	parsed_url = urllib.parse.urlparse(url)
+	path_parts = parsed_url.path.strip("/").split("/")
 
 	# get only user
-	if parsed_url.path.count('/') >= 2 :
-		url = '/'.join(url.split('/')[:4])
-	username = url.split("/")[-1].lower()
+	username = path_parts[0].lower() if path_parts and path_parts[0] else ""
+	if not username:
+		return
 
-	if username in deny_list_usernames :
+	if username in deny_list_usernames:
 		return
 	#remove characters from username
 	allowed = "abcdefghijklmnopqrstuvwxyz0123456789-"
 	username = ''.join([ c for c in username if c in allowed ])
-	url = url.replace(url.split("/")[-1], username)
+	if not username:
+		return
 
-	if url not in cache_domains :
-		cache_domains.add(url) 
+	profile_url = f"https://github.com/{username}"
 
+	if profile_url in cache_domains:
+		return
+	cache_domains.add(profile_url)
 
+	try:
+		r = requests.get(profile_url, verify=False)
+	except:
+		return
+
+	if r.status_code != 404:
+		return
+
+	# Check if this is a renamed user with retired repos.
+	# If the original URL has a repo path and GitHub returns a 301 redirect,
+	# the repos are retired/protected — not a real takeover.
+	if len(path_parts) >= 2 and path_parts[1]:
+		repo_url = f"https://github.com/{username}/{path_parts[1]}"
 		try:
-			r = requests.get(url, verify=False)
+			r2 = requests.head(repo_url, allow_redirects=False, verify=False, timeout=10)
+			if r2.status_code == 301:
+				return
 		except:
-			return
-		
-		if r.status_code == 404 :
-			print("[!] Github unregistred username:", url)
+			pass
 
+	print(f"[!] Github unregistered username: {profile_url}")

@@ -49,7 +49,9 @@ def check(domains):
 			dns_resolver.query_A(d)
 		except aiodns.error.DNSError as error :
 			if error.args[0] == 4 :
-				print("[!] % NOT REGISTRED", d)
+				print("[!] %s NOT REGISTERED" % d)
+		except Exception :
+			pass
 
 def check_passive(domain):
 

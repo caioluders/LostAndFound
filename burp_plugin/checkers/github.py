@@ -28,6 +28,12 @@ def check(request_url, response_body, response_status_code):
     if not all(c in allowed for c in username):
         return None
 
+    # If URL has a repo path and returns 301, it's a renamed user with
+    # retired repos — GitHub protects these, not a real takeover.
+    if len(path_parts) >= 2 and path_parts[1]:
+        if response_status_code == 301:
+            return None
+
     if response_status_code == 404:
         return {"detail": "Unregistered GitHub username: %s" % username}
 
