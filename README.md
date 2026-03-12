@@ -42,7 +42,7 @@ URL:  http://aratu.boitatech.com.br/
 
 They check (duh) if this asset is broken.
 
-- [ ] npm
+- [X] npm
 - [X] twitter
 - [X] github
 - [ ] TikTok
@@ -51,11 +51,14 @@ They check (duh) if this asset is broken.
 - [X] domain
 - [X] bitbucket
 - [X] gitlab
-- [ ] rubygems
-- [ ] pypi
-- [ ] packagist/composer
+- [X] rubygems
+- [X] pypi
+- [X] packagist/composer
 - [X] S3
-- [ ] buckets
+- [X] GCS (Google Cloud Storage)
+- [X] Azure Blob Storage
+- [X] Heroku
+- [X] Firebase
 
 ## Extractors
 
