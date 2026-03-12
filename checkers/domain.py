@@ -35,7 +35,23 @@ def clean_domain(dirty_domain):
 	if not domain_ext.suffix or domain_ext.suffix not in tldextract.TLDExtract().tlds :
 		return False
 
-	return f"{domain_ext.domain}.{domain_ext.suffix}"
+	if not domain_ext.domain :
+		return False
+
+	cleaned = f"{domain_ext.domain}.{domain_ext.suffix}"
+
+	# Reject domains with empty labels (leading/trailing/double dots)
+	if cleaned.startswith(".") or cleaned.endswith(".") or ".." in cleaned:
+		return False
+
+	# Reject labels longer than 63 chars or total longer than 253
+	if len(cleaned) > 253:
+		return False
+	for label in cleaned.split("."):
+		if not label or len(label) > 63:
+			return False
+
+	return cleaned
 
 def check(domains):
 	domains = filter(None, domains)
