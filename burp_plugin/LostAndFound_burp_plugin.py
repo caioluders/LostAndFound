@@ -127,9 +127,10 @@ class BurpExtender(IBurpExtender, IScannerCheck, ITab):
                 ns = {"__builtins__": __builtins__}
                 execfile(filepath, ns)
                 if 'base_domains' in ns and 'check' in ns:
-                    # Wrap namespace as a simple object
-                    checker = type('Checker', (), ns)
-                    checkers[name] = checker
+                    # Store the raw namespace dict as the checker.
+                    # Wrapping in a class/instance causes Jython to treat
+                    # functions as unbound methods requiring self.
+                    checkers[name] = ns
                     stderr.write("[*] Loaded checker: %s\n" % name)
                 else:
                     stderr.write("[!] Checker %s missing base_domains or check\n" % name)
@@ -190,7 +191,7 @@ class BurpExtender(IBurpExtender, IScannerCheck, ITab):
         self._checker_checkboxes = {}
         for name in sorted(self.checkers.keys()):
             checker = self.checkers[name]
-            display = getattr(checker, 'name', name)
+            display = checker.get('name', name)
             cb = JCheckBox(display, True)
             cb.addActionListener(lambda e, n=name: self._toggle_checker(n, e))
             self._checker_checkboxes[name] = cb
@@ -256,13 +257,13 @@ class BurpExtender(IBurpExtender, IScannerCheck, ITab):
                 return None
             self._checked_urls.add(cache_key)
 
-        result = checker.check(url, body, status_code)
+        result = checker['check'](url, body, status_code)
         if result is None:
             return None
 
         detail = result.get("detail", "Broken asset detected")
-        checker_display = getattr(checker, 'name', checker_name)
-        sev = getattr(checker, 'severity', 'Medium')
+        checker_display = checker.get('name', checker_name)
+        sev = checker.get('severity', 'Medium')
 
         issue_name = "Lost&Found: %s" % checker_display
         issue_detail = (
@@ -293,8 +294,8 @@ class BurpExtender(IBurpExtender, IScannerCheck, ITab):
             return None
 
         request_url = self._helpers.analyzeRequest(baseRequestResponse).getUrl().toString()
-        parsed = urlparse(request_url)
-        host = parsed.hostname or ""
+        # Use Burp's getHost() directly - more reliable than urlparse in Jython
+        host = baseRequestResponse.getHttpService().getHost()
         response_body = self._helpers.bytesToString(response_bytes)
         response_info = self._helpers.analyzeResponse(response_bytes)
         status_code = response_info.getStatusCode()
@@ -305,9 +306,10 @@ class BurpExtender(IBurpExtender, IScannerCheck, ITab):
         for name, checker in self.checkers.items():
             if not self._enabled_checkers.get(name, True):
                 continue
-            if not hasattr(checker, 'base_domains'):
+            if 'base_domains' not in checker:
                 continue
-            if self._fnmatch_all(host, checker.base_domains):
+            if self._fnmatch_all(host, checker['base_domains']):
+                self._log("[*] Checking: %s -> %s" % (name, request_url))
                 issue = self._check_url(name, checker, request_url, response_body, status_code, baseRequestResponse)
                 if issue:
                     issues.append(issue)
@@ -321,9 +323,9 @@ class BurpExtender(IBurpExtender, IScannerCheck, ITab):
                 for name, checker in self.checkers.items():
                     if not self._enabled_checkers.get(name, True):
                         continue
-                    if not hasattr(checker, 'base_domains'):
+                    if 'base_domains' not in checker:
                         continue
-                    if self._fnmatch_all(ext_host, checker.base_domains):
+                    if self._fnmatch_all(ext_host, checker['base_domains']):
                         # Make an active request via Burp
                         try:
                             port = ext_parsed.port or (443 if ext_parsed.scheme == 'https' else 80)
