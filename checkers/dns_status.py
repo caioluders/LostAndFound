@@ -14,8 +14,10 @@ def check_domain_status(domain):
     try:
         # Extract the main domain without subdomains
         ext = tldextract.extract(domain)
+        if not ext.domain or not ext.suffix:
+            return True  # Not a valid domain, skip
         domain_to_check = f"{ext.domain}.{ext.suffix}"
-        
+
         # Try to resolve the domain
         socket.gethostbyname(domain_to_check)
         return True
