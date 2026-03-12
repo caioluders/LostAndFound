@@ -304,18 +304,6 @@ def main():
         running = False
         proxy_thread.join(timeout=5)
         report_unregistered_domains()
-        
-        # Save results to file
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        with open(f"unregistered_domains_{timestamp}.txt", "w") as f:
-            for domain in sorted(unregistered_domains):
-                f.write(f"{domain}\n")
-        
-        if unregistered_domains:
-            file_msg = f"Unregistered domains saved to unregistered_domains_{timestamp}.txt"
-            logger.info(file_msg)
-            if verbose:
-                print(f"[INFO] {file_msg}")
 
 if __name__ == "__main__":
     main() 

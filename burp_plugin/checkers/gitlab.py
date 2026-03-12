@@ -1,16 +1,20 @@
-import urllib
+from urlparse import urlparse
 
 base_domains = ["gitlab.com"]
-cache_domains = set()
+name = "GitLab"
+severity = "Medium"
 
 
 def check(request_url, response_body, response_status_code):
-	
-	if request_url not in cache_domains :
-		cache_domains.add(request_url) 
+    parsed = urlparse(request_url)
+    path_parts = parsed.path.strip("/").split("/")
 
+    if not path_parts or not path_parts[0]:
+        return None
 
-		if response_status_code == 302 and "You are being" in response_body :
-			return True
-		else :
-			return False
+    username = path_parts[0]
+
+    if response_status_code == 302 and "You are being" in response_body:
+        return {"detail": "Unregistered GitLab username: %s" % username}
+
+    return None

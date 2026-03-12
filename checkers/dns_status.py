@@ -3,7 +3,6 @@
 import socket
 import tldextract
 import logging
-import datetime
 
 base_domains = ["*"]  # Match all domains
 cache_domains = set()
@@ -47,11 +46,6 @@ def check(url):
         
         if not domain_exists:
             print(f"[DNS] Potential domain takeover opportunity: {domain} is unregistered")
-            
-            # Optionally, save to a results file
-            timestamp = datetime.datetime.now().strftime("%Y-%m-%d")
-            with open(f"unregistered_domains_{timestamp}.txt", "a") as f:
-                f.write(f"{domain}\n")
     
     except Exception as e:
         logger.error(f"Error in DNS status checker: {e}") 
