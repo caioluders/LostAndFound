@@ -1,4 +1,4 @@
-import os, sys, argparse, importlib.util, urllib, fnmatch, tqdm, requests
+import os, sys, argparse, importlib.util, urllib, fnmatch, tqdm, requests, builtins
 from extractors import from_url, from_string, from_apk, from_binary, from_dir
 from utils import *
 import dns_proxy  # Import our new DNS proxy module
@@ -34,16 +34,19 @@ def load_checkers():
 
 def check_all(urls, checkers):
 
-    domains = [] 
+    domains = []
+    _print = builtins.print
+
     if args.verbose :
-        print(urls)
-    print("[?] Checking URLS ...")
+        _print(urls)
+
+    _print("[?] Checking URLS ...")
+    builtins.print = lambda *a, **kw: tqdm.tqdm.write(' '.join(str(x) for x in a))
+
     for u in tqdm.tqdm(urls) :
         u = clean_url(u)
 
         parsed_url = urllib.parse.urlparse(u)
-
-        #print(parsed_url)
 
         domains.append(parsed_url.netloc)
 
@@ -52,9 +55,11 @@ def check_all(urls, checkers):
                 if fnmatch_all(parsed_url.netloc, checkers[c].base_domains) :
                     checkers[c].check(u)
 
-    print("[?] Checking Domains ...")
+    _print("[?] Checking Domains ...")
 
     checkers["domain"].check(domains)
+
+    builtins.print = _print
 
 def main(args):
     checkers = load_checkers()

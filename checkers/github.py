@@ -2,17 +2,21 @@ import requests, urllib
 
 base_domains = ["github.com"]
 cache_domains = set()
+deny_list_usernames = ["orgs", "features", "marketplace", "explore", "topics", "trending", "collections", "events", "sponsors", "settings", "notifications", "login", "join", "new", "about", "pricing", "security", "enterprise", "team", "customer-stories"]
 
 
 def check(url):
 
-	
+
 	parsed_url = urllib.parse.urlparse(url)
-	
+
 	# get only user
 	if parsed_url.path.count('/') >= 2 :
 		url = '/'.join(url.split('/')[:4])
 	username = url.split("/")[-1].lower()
+
+	if username in deny_list_usernames :
+		return
 	#remove characters from username
 	allowed = "abcdefghijklmnopqrstuvwxyz0123456789-"
 	username = ''.join([ c for c in username if c in allowed ])

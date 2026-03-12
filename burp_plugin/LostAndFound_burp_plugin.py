@@ -1,4 +1,4 @@
-import fnmatch
+import fnmatch, os
 from urlparse import urlparse
 from burp import IBurpExtender
 from burp import IScannerCheck

@@ -16,7 +16,7 @@ def check(url):
 		cache_domains.add(url) 
 
 
-		r = requests.get(url, verify=False)
+		r = requests.get(url, verify=False, allow_redirects=False)
 
 		if r.status_code == 302 and "You are being" in r.text :
 			print("[!] Gitlab unregistred username:", url)
